@@ -1,13 +1,14 @@
 #pragma once
 
 #include <Bromine/Scene/Scene.h>
+#include <vector>
 
 using namespace BromineEngine;
 
-class ExampleScene : public Scene {
+class SimulationScene : public Scene {
 public:
-	ExampleScene();
-	~ExampleScene();
+	SimulationScene();
+	~SimulationScene();
 
 	void loadScene();
 };

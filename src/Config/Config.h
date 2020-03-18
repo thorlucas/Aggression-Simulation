@@ -2,15 +2,14 @@
 #define _CONFIG_H_
 
 #include <Bromine/Scene/Scene.h>
-#include <App/Scene/ExampleScene.h>
+#include <App/Scene/SimulationScene.h>
 
 namespace BromineEngine {
 
 // TODO:
 static Scene* makeInitialScene() {
-	return new ExampleScene;
+	return new SimulationScene;
 }
-// static Scene* const initialScene = new ExampleScene;
 
 static const int windowWidth = 1280;
 static const int windowHeight = 720;
