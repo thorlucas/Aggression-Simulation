@@ -5,6 +5,7 @@
 namespace BromineEngine {
 
 DEFINE_TRAIT_SERVER(RenderServer, RenderTrait)
+DEFINE_TRAIT_SERVER_DESTROY_TRAIT_STANDARD(RenderServer, RenderTrait)
 
 Texture::Texture(uint32_t width, uint32_t height, void* pixels) : width(width), height(height), pixels(pixels) {
 	glGenTextures(1, &glTexture);
@@ -181,8 +182,13 @@ RenderServer::~RenderServer() {
 
 void RenderServer::activateTrait(RenderTrait* trait) {
 	activeTraits.push_back(trait);
-
 	Bromine::log(Logger::DEBUG, "RenderTrait %p for Node %d has been activated in RenderServer.", trait, trait->owner().id);
+	instructionsDirtyFlag = true;
+}
+
+void RenderServer::deactivateTrait(RenderTrait* trait) {
+	activeTraits.erase(std::find(activeTraits.begin(), activeTraits.end(), trait));
+	Bromine::log(Logger::DEBUG, "RenderTrait %p for Node %d has been deactivated in RenderServer.", trait, trait->owner().id);
 	instructionsDirtyFlag = true;
 }
 
@@ -324,9 +330,12 @@ void RenderServer::drawPoint(Vec2f* pos, Vec3d* color) {
 void RenderServer::drawTexture(Vec2f* pos, Vec2f* scale, ResourceID texture) {
 	if (drawCustomFlag) return;
 	if (drawImmediateFlag) {
+		Bromine::log(Logger::DEBUG, "Drawing texture immediate");
 		switchShaderProgramImmediate(textureShaderProgram);
 		return drawTextureImmediate(pos, scale, &getResource(texture));
 	};
+
+	Bromine::log(Logger::DEBUG, "Drawing texture");
 
 	if (instructionCurrentShaderProgram != textureShaderProgram) {
 		switchShaderProgram(textureShaderProgram);
@@ -400,6 +409,10 @@ void RenderServer::switchShaderProgramImmediate(ShaderProgram program) {
 }
 
 void RenderServer::renderNode(Node& node) {
+	if (!node.active()) {
+		return;
+	};
+
 	try {
 		node.getTrait<RenderTrait>().render();
 		if (drawCustomFlag) drawCustomFlag = false;
@@ -427,6 +440,7 @@ void RenderServer::renderNode(Node& node) {
 
 void RenderServer::update(double delta) {
 	if (instructionsDirtyFlag) {
+		instructions.clear();
 		Scene* currentScene = Bromine::instance().getCurrentScene();
 		Node& rootNode = Bromine::node(currentScene->rootNode);
 
