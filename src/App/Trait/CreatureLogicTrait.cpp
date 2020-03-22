@@ -19,7 +19,7 @@ void CreatureLogicTrait::update(double delta) {
 			return;
 	}
 
-	Vec2f distVec = targetFood->position() - ownerPosition;
+	Vec2f distVec = targetFood->position() - Vec2f(0, 32) - ownerPosition;
 	Vec2f direction = static_cast<float>(delta * 50.f) * glm::normalize(distVec);
 	if (glm::length(distVec) < glm::length(direction)) {
 		simulation.eatFood(targetFood);

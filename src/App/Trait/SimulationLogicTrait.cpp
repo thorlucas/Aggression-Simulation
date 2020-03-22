@@ -33,8 +33,7 @@ void SimulationLogicTrait::resetFood() {
 }
 
 void SimulationLogicTrait::eatFood(Node* foodNode) {
-	foodNode->position() = Vec2f(-100, 0); // FOR NOW SINCE WE CANT REMOVE LOL
-	// std::remove(foodNodes.begin(), foodNodes.end(), foodNode);
+	foodNode->destroy();
 	foodNodes.erase(std::find(foodNodes.begin(), foodNodes.end(), foodNode));
 
 	if (foodNodes.size() == 0) {
