@@ -48,3 +48,5 @@
 	- `deltaTime`
 	- Set timers with callbacks
 	- Get absolute time since started
+- `RenderServer` doesn't update when a child is added / add global pos
+- No way to get parent from node
