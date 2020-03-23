@@ -12,7 +12,9 @@ private:
 	bool dayIsDone;
 	ResourceID bookTexture;
 
-	void resetFood();
+	float foodTimer;
+
+	void addFood();
 
 protected:
 	SimulationLogicTrait(const NodeID _owner);

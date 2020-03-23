@@ -12,8 +12,8 @@ SimulationScene::SimulationScene() {
 	Node& rootNodeRef = Bromine::node(rootNode);
 
 	Node& simulationNode = Bromine::node()
-		->trait<SimulationLogicTrait>()
-	->create();
+		.trait<SimulationLogicTrait>()
+	.create();
 	rootNodeRef.addChild(simulationNode);
 
 	SimulationLogicTrait& simulation = simulationNode.getTrait<SimulationLogicTrait>();
@@ -22,10 +22,10 @@ SimulationScene::SimulationScene() {
 	
 	for (int i = 0; i < 10; ++i) {
 		Node& creatureNode = Bromine::node()
-			->position(Vec2f(rand() % windowWidth, rand() % windowHeight))
-			->trait<SpriteRenderTrait>(slimeTexture, Vec2f(2, 2))
-			->trait<CreatureLogicTrait>(simulation)
-		->create();
+			.position(Vec2f(rand() % windowWidth, rand() % windowHeight))
+			.trait<SpriteRenderTrait>(slimeTexture, Vec2f(2, 2))
+			.trait<CreatureLogicTrait>(simulation)
+		.create();
 
 		simulation.creatureNodes.push_back(&creatureNode);
 		rootNodeRef.addChild(creatureNode);
